@@ -18,36 +18,10 @@ jobs:
 
     - name: Run tests
       run: matlab -batch "cd Tests; run_all_tests;"
-      
-    - name: Archive test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: unit_test_results
-        path: |
-          test1/test1_latex.svg
-          test2/test2_latex.svg
-          test3/test3_latex.svg
-          test4/test4_latex.svg
-          test5/test5_latex.svg
-          test6/test6_latex.svg
-          test7/test7_latex.svg
-  build_pdf:
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
+
     - name: Install LaTeX
       run: sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
       
-    - name: Download test results
-      uses: actions/download-artifact@v2
-      with:
-        name: unit_test_1
-        path: unit_test/test1
-        
     - name: Build PDF
       run: |
         # Your commands to generate PDF using latexmk
