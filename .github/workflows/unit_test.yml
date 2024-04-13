@@ -4,26 +4,29 @@ on:
   push:
     branches:
       - main
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
       
-    - name: Set up MATLAB
-      uses: matlab-actions/setup-matlab@v2
+      # Sets up MATLAB on a GitHub-hosted runner
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
 
-    - name: Run tests
-      run: matlab -batch "cd Tests; run_all_tests;"
+      - name: Run custom testing procedure
+        uses: matlab-actions/run-command@v2
+        with:
+          command: cd unit_test; run_all_tests;
 
-    - name: Install LaTeX
-      run: sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+      - name: Install LaTeX
+        run: sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
       
-    - name: Build PDF
-      run: |
-        # Your commands to generate PDF using latexmk
-        # For example:
-        latexmk -pdf -output-directory=unit_test/test1 unit_test/test1/test1.tex
+      - name: Build PDF
+        run: latexmk -pdf -output-directory=unit_test/test1 unit_test/test1/test1.tex
