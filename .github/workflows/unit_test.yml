@@ -14,30 +14,23 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Set up MATLAB
-      uses: mathworks/setup-matlab@v0
-      with:
-        matlab-version: R2023b 
-        
+      uses: matlab-actions/setup-matlab@v2
+
     - name: Run tests
       run: matlab -batch "cd Tests; run_all_tests;"
       
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
-        - name: unit_test_1
-          path: test1/test1_latex.svg
-        - name: unit_test_2
-          path: test2/test2_latex.svg
-        - name: unit_test_3
-          path: test3/test3_latex.svg
-        - name: unit_test_4
-          path: test4/test4_latex.svg
-        - name: unit_test_5
-          path: test5/test5_latex.svg
-        - name: unit_test_6
-          path: test6/test6_latex.svg
-        - name: unit_test_7
-          path: test7/test7_latex.svg      
+        name: unit_test_results
+        path: |
+          test1/test1_latex.svg
+          test2/test2_latex.svg
+          test3/test3_latex.svg
+          test4/test4_latex.svg
+          test5/test5_latex.svg
+          test6/test6_latex.svg
+          test7/test7_latex.svg
   build_pdf:
     needs: test
     runs-on: ubuntu-latest
